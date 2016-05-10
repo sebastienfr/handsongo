@@ -1,0 +1,18 @@
+# handsongo micro-service
+handsongo:
+ container_name: handsongo
+ image: sfeir/handsongo:latest
+ restart: always
+ links:
+   - mongo
+ ports:
+  - "8020:8020"
+ command: /go/bin/handsongo -port 8020 -logl debug -logf text -statd 15s -db mongodb://mongo/data
+
+# bdd mockup
+mongo:
+ container_name: handsongo-mongo
+ image: mongo:3.2
+ restart: always
+ ports:
+  - "27017:27017"
