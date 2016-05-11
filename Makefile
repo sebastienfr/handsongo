@@ -9,6 +9,7 @@
 GO=$(firstword $(subst :, ,$(GOPATH)))
 # list of pkgs for the project without vendor
 PKGS=$(shell go list ./... | grep -v /vendor/)
+DOCKER_IP=$(shell docker-mahine ip default)
 export GO15VENDOREXPERIMENT=1
 
 # -----------------------------------------------------------------
@@ -69,14 +70,16 @@ test:
 	@go test -v $(PKGS)
 
 lint:
-	#@golint model/...
-	#@golint router/...
+	@golint dao/...
+	@golint model/...
+	@golint web/...
 	@golint utils/...
 	@golint ./.
 	@go vet $(PKGS)
 
 start:
-	@handsongo -port 8020 -logl debug -logf text -statd 15s -db mongodb://mongo/data
+	@docker run -d -p "27017:27017" mongo
+	@handsongo -port 8020 -logl debug -logf text -statd 15s -db mongodb://$(DOCKER_IP)/spirits
 
 stop:
 	@killall handsongo

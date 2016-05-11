@@ -5,6 +5,8 @@ import (
 	"fmt"
 	logger "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/sebastienfr/handsongo/dao"
+	"github.com/sebastienfr/handsongo/model"
 	"github.com/sebastienfr/handsongo/utils"
 	"os"
 	"strconv"
@@ -21,7 +23,7 @@ var (
 
 	port               = 8020
 	logLevel           = "warning"
-	db                 = "mongodb://mongo/data"
+	db                 = "mongodb://mongo/spirits"
 	logFormat          = utils.TextFormatter
 	statisticsDuration = 20 * time.Second
 
@@ -108,7 +110,43 @@ func main() {
 			logger.Warn("error setting log level, using debug as default")
 		}
 
+		// get the mongodb dao
+		daoMongo, err := dao.GetSpiritDAO(db, dao.DAOMongo)
+		if err != nil {
+			logger.WithField("error", err).WithField("connection string", db).Fatal("unable to connect to mongo db")
+		}
+
+		// TODO remove test purpose only
+		spirit := model.Spirit{
+			Name:         "Caroni",
+			Distiller:    "Caroni",
+			Bottler:      "Velier",
+			Country:      "Trinidad",
+			Composition:  "Molasse",
+			SpiritType:   model.TypeRhum,
+			Age:          15,
+			BottlingDate: time.Date(2015, 01, 01, 0, 0, 0, 0, time.UTC),
+			Score:        8.5,
+			Comment:      "heavy tire taste",
+		}
+
+		// save a spirit
+		err = daoMongo.SaveSpirit(&spirit)
+		if err != nil {
+			logger.WithField("error", err).WithField("spirits", spirit).Warn("unable to save spirit")
+		}
+
+		// find all spirits
+		spirits, err := daoMongo.GetAllSpirits(dao.NoPaging, dao.NoPaging)
+		if err != nil {
+			logger.WithField("error", err).WithField("spirits", spirits).Warn("unable to retrieve spirits")
+		}
+
+		logger.WithField("spirits", spirits).Debug("spirits found")
+
+		// launch the statistics
 		statistics := utils.NewStatistics(statisticsDuration)
+		// TODO remove test purpose only
 		statistics.PlusOne()
 
 		// return and wait without quiting
