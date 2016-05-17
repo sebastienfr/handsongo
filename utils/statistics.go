@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	logger "github.com/Sirupsen/logrus"
 	"time"
 )
@@ -43,7 +44,8 @@ func (sw *Statistics) run() {
 			sw.counter += uint32(stat)
 		case <-ticker.C:
 			elapsed := time.Since(sw.start)
-			logger.WithField("elapsed time", elapsed).WithField("count", sw.counter).Warn("request monitoring")
+			logger.WithField("elapsed time", elapsed).WithField("count", sw.counter).
+				WithField("request per second", fmt.Sprintf("%.2f", float64(sw.counter)/elapsed.Seconds())).Warn("request monitoring")
 			sw.counter = 0
 			sw.start = time.Now()
 		}

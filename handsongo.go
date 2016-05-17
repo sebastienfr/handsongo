@@ -5,9 +5,12 @@ import (
 	"fmt"
 	logger "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/codegangsta/negroni"
+	"github.com/meatballhat/negroni-logrus"
 	"github.com/sebastienfr/handsongo/dao"
 	"github.com/sebastienfr/handsongo/model"
 	"github.com/sebastienfr/handsongo/utils"
+	"github.com/sebastienfr/handsongo/web"
 	"os"
 	"strconv"
 	"time"
@@ -117,6 +120,7 @@ func main() {
 		}
 
 		// TODO remove test purpose only
+		///////////////////////////////////////
 		spirit := model.Spirit{
 			Name:         "Caroni",
 			Distiller:    "Caroni",
@@ -135,26 +139,36 @@ func main() {
 		if err != nil {
 			logger.WithField("error", err).WithField("spirits", spirit).Warn("unable to save spirit")
 		}
-
-		// find all spirits
-		spirits, err := daoMongo.GetAllSpirits(dao.NoPaging, dao.NoPaging)
-		if err != nil {
-			logger.WithField("error", err).WithField("spirits", spirits).Warn("unable to retrieve spirits")
-		}
-
-		logger.WithField("spirits", spirits).Debug("spirits found")
-
-		// launch the statistics
-		statistics := utils.NewStatistics(statisticsDuration)
+		///////////////////////////////////////
 		// TODO remove test purpose only
-		statistics.PlusOne()
 
-		// return and wait without quiting
-		// to see statistics
-		stop := make(chan bool)
-		<-stop
+		// web server
+		n := negroni.New()
 
-		// TODO web server
+		// new handler
+		handler := web.NewSpiritHandler(daoMongo)
+		// new router
+		router := web.NewRouter(handler)
+
+		// add middleware for logging
+		n.Use(negronilogrus.NewMiddlewareFromLogger(logger.StandardLogger(), "spirit"))
+
+		// add recovery middleware in case of panic in handler func
+		recovery := negroni.NewRecovery()
+		recovery.PrintStack = false
+		n.Use(recovery)
+
+		// add statistics middleware
+		n.Use(web.NewStatisticsMiddleware(statisticsDuration))
+
+		// add as many middleware as you like
+
+		// handler goes last
+		n.UseHandler(router.Mux)
+
+		// serve
+		n.Run(":" + strconv.Itoa(port))
+
 	}
 
 	// run the app

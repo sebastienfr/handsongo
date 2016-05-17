@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"github.com/sebastienfr/handsongo/model"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -21,8 +22,16 @@ func NewSpiritDAOMongo(session *mgo.Session) SpiritDAO {
 }
 
 func (s *SpiritDAOMongo) GetSpiritByID(ID string) (*model.Spirit, error) {
+	// check ID
+	if !bson.IsObjectIdHex(ID) {
+		return nil, errors.New("Invalid input to ObjectIdHex")
+	}
+
+	session := s.session.Copy()
+	defer session.Close()
+
 	spirit := model.Spirit{}
-	c := s.session.DB("").C(collection)
+	c := session.DB("").C(collection)
 	err := c.Find(bson.M{"_id": bson.ObjectIdHex(ID)}).One(&spirit)
 	return &spirit, err
 }
