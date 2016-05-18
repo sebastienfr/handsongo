@@ -6,21 +6,21 @@ import (
 )
 
 const (
-	//
+	// TypeRhum is the constant used for rhum spirits
 	TypeRhum = "rhum"
-	//
+	// TypeWhine is the constant used for rhum spirits
 	TypeWhine = "wine"
-	//
+	// TypeBeer is the constant used for rhum spirits
 	TypeBeer = "beer"
-	//
+	// TypeCalados is the constant used for rhum spirits
 	TypeCalados = "calvados"
-	//
+	// TypeChampagne is the constant used for rhum spirits
 	TypeChampagne = "champagne"
-	//
+	// TypeGin is the constant used for rhum spirits
 	TypeGin = "gin"
 )
 
-// Spirit is the struture to define a spirit
+// Spirit is the structure to define a spirit
 type Spirit struct {
 	ID           bson.ObjectId `json:"id" bson:"_id,omitempty" `
 	Name         string        `json:"name" bson:"name"`
@@ -34,4 +34,9 @@ type Spirit struct {
 	BottlingDate time.Time     `json:"bottlingDate" bson:"bottlingDate"`
 	Score        float32       `json:"score" bson:"score"`
 	Comment      string        `json:"comment" bson:"comment"`
+}
+
+// GetID returns the ID of an Spirit as a string
+func (s *Spirit) GetID() string {
+	return s.ID.Hex()
 }

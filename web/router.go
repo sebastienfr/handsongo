@@ -15,10 +15,12 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+// Router is the struct use for routing
 type Router struct {
 	Mux *mux.Router
 }
 
+// NewRouter creates a new router instance
 func NewRouter(handler *SpiritHandler) *Router {
 	// new router
 	router := Router{

@@ -1,7 +1,8 @@
 # Changelog
 
 ## v0.0.1 [Unreleased]
-- 16/05/18 feat(web): add web server, middleware and router and get implementation without range (SFR)
+- 16/05/19 feat(all): finalize web server, tests and test script (SFR)
+           feat(web): add web server, middleware and router and get implementation without range
            refact(dao): fix panic on wrong object id format
            chores(vendor): upate vendors with web dependency
            chore(etc): add scripts to query API

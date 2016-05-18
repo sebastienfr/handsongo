@@ -8,7 +8,7 @@ import (
 
 const (
 	// DAOMongo is used for Mongo implementation of SpiritDAO
-	DAOMongo = iota
+	DAOMongo int = iota
 	// DAOMock is used for mocked implementation of SpiritDAO
 	DAOMock
 
@@ -39,6 +39,7 @@ func GetSpiritDAO(param string, daoType int) (SpiritDAO, error) {
 		// set mode
 		mgoSession.SetMode(mgo.Monotonic, true)
 		mgoSession.SetPoolLimit(poolSize)
+
 		return NewSpiritDAOMongo(mgoSession), nil
 	case DAOMock:
 		return NewSpiritDAOMock(), nil

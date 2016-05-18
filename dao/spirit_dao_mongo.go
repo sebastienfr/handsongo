@@ -2,6 +2,7 @@ package dao
 
 import (
 	"errors"
+	logger "github.com/Sirupsen/logrus"
 	"github.com/sebastienfr/handsongo/model"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -9,18 +10,35 @@ import (
 
 const (
 	collection = "spirits"
+	index      = "id"
 )
 
+// SpiritDAOMongo is the mongo implementation of the SpiritDAO
 type SpiritDAOMongo struct {
 	session *mgo.Session
 }
 
+// NewSpiritDAOMongo creates a new SpiritDAO mongo implementation
 func NewSpiritDAOMongo(session *mgo.Session) SpiritDAO {
+	// create index
+	err := session.DB("").C(collection).EnsureIndex(mgo.Index{
+		Key:        []string{index},
+		Unique:     true,
+		DropDups:   true,
+		Background: true,
+		Sparse:     true,
+	})
+
+	if err != nil {
+		logger.WithField("error", err).Warn("mongo db connection")
+	}
+
 	return &SpiritDAOMongo{
 		session: session,
 	}
 }
 
+// GetSpiritByID returns a spirit by its ID
 func (s *SpiritDAOMongo) GetSpiritByID(ID string) (*model.Spirit, error) {
 	// check ID
 	if !bson.IsObjectIdHex(ID) {
@@ -36,6 +54,7 @@ func (s *SpiritDAOMongo) GetSpiritByID(ID string) (*model.Spirit, error) {
 	return &spirit, err
 }
 
+// getAllSpiritsByQuery returns spirits by query and paging capability
 func (s *SpiritDAOMongo) getAllSpiritsByQuery(query interface{}, start, end int) ([]model.Spirit, error) {
 	session := s.session.Copy()
 	defer session.Close()
@@ -56,22 +75,27 @@ func (s *SpiritDAOMongo) getAllSpiritsByQuery(query interface{}, start, end int)
 	return spirits, err
 }
 
+// GetAllSpirits returns all spirits with paging capability
 func (s *SpiritDAOMongo) GetAllSpirits(start, end int) ([]model.Spirit, error) {
-	return s.getAllSpiritsByQuery(nil, NoPaging, NoPaging)
+	return s.getAllSpiritsByQuery(nil, start, end)
 }
 
+// GetSpiritsByName returns all spirits by name
 func (s *SpiritDAOMongo) GetSpiritsByName(name string) ([]model.Spirit, error) {
 	return s.getAllSpiritsByQuery(bson.M{"name": name}, NoPaging, NoPaging)
 }
 
+// GetSpiritsByType returns all spirits by type
 func (s *SpiritDAOMongo) GetSpiritsByType(spiritType string) ([]model.Spirit, error) {
 	return s.getAllSpiritsByQuery(bson.M{"type": spiritType}, NoPaging, NoPaging)
 }
 
+// GetSpiritsByTypeAndScore returns all spirits by type and score greater than parameter
 func (s *SpiritDAOMongo) GetSpiritsByTypeAndScore(spiritType string, score uint8) ([]model.Spirit, error) {
-	return s.getAllSpiritsByQuery(bson.M{"type": spiritType, "score": score}, NoPaging, NoPaging)
+	return s.getAllSpiritsByQuery(bson.M{"type": spiritType, "score": bson.M{"$gte": score}}, NoPaging, NoPaging)
 }
 
+// SaveSpirit saves the spirit
 func (s *SpiritDAOMongo) SaveSpirit(spirit *model.Spirit) error {
 	session := s.session.Copy()
 	defer session.Close()
@@ -79,6 +103,7 @@ func (s *SpiritDAOMongo) SaveSpirit(spirit *model.Spirit) error {
 	return c.Insert(spirit)
 }
 
+// UpsertSpirit updates or creates a spirit
 func (s *SpiritDAOMongo) UpsertSpirit(ID string, spirit *model.Spirit) (*mgo.ChangeInfo, error) {
 	session := s.session.Copy()
 	defer session.Close()
@@ -86,6 +111,7 @@ func (s *SpiritDAOMongo) UpsertSpirit(ID string, spirit *model.Spirit) (*mgo.Cha
 	return c.Upsert(bson.M{"_id": bson.ObjectIdHex(ID)}, spirit)
 }
 
+// DeleteSpirit deletes a spirits by its ID
 func (s *SpiritDAOMongo) DeleteSpirit(ID string) error {
 	session := s.session.Copy()
 	defer session.Close()

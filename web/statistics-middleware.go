@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// StatisticsMiddleware is the middleware to record request statistics
 type StatisticsMiddleware struct {
 	Stat *utils.Statistics
 }
 
+// NewStatisticsMiddleware creates a new statistics middleware
 func NewStatisticsMiddleware(duration time.Duration) *StatisticsMiddleware {
 	return &StatisticsMiddleware{
 		Stat: utils.NewStatistics(duration),

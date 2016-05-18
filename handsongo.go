@@ -8,7 +8,6 @@ import (
 	"github.com/codegangsta/negroni"
 	"github.com/meatballhat/negroni-logrus"
 	"github.com/sebastienfr/handsongo/dao"
-	"github.com/sebastienfr/handsongo/model"
 	"github.com/sebastienfr/handsongo/utils"
 	"github.com/sebastienfr/handsongo/web"
 	"os"
@@ -119,29 +118,6 @@ func main() {
 			logger.WithField("error", err).WithField("connection string", db).Fatal("unable to connect to mongo db")
 		}
 
-		// TODO remove test purpose only
-		///////////////////////////////////////
-		spirit := model.Spirit{
-			Name:         "Caroni",
-			Distiller:    "Caroni",
-			Bottler:      "Velier",
-			Country:      "Trinidad",
-			Composition:  "Molasse",
-			SpiritType:   model.TypeRhum,
-			Age:          15,
-			BottlingDate: time.Date(2015, 01, 01, 0, 0, 0, 0, time.UTC),
-			Score:        8.5,
-			Comment:      "heavy tire taste",
-		}
-
-		// save a spirit
-		err = daoMongo.SaveSpirit(&spirit)
-		if err != nil {
-			logger.WithField("error", err).WithField("spirits", spirit).Warn("unable to save spirit")
-		}
-		///////////////////////////////////////
-		// TODO remove test purpose only
-
 		// web server
 		n := negroni.New()
 
@@ -168,7 +144,6 @@ func main() {
 
 		// serve
 		n.Run(":" + strconv.Itoa(port))
-
 	}
 
 	// run the app
