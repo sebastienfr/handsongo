@@ -4,8 +4,8 @@
 
 # check if running on osx or linux
 IP=127.0.0.1
-if [ `uname -s` == "Darwin" ]; then
-  IP=$(docker-machine ip)
+if [ -z "$DOCKER_MACHINE_NAME" ]; then
+  IP=$(docker-machine ip $DOCKER_MACHINE_NAME)
 fi
 
 echo "Create spirit from file..."
