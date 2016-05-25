@@ -12,6 +12,7 @@ PKGS=$(shell go list ./... | grep -v /vendor/)
 DOCKER_IP=$(shell if [ -z "$(DOCKER_MACHINE_NAME)" ]; then echo 'localhost'; else docker-machine ip $(DOCKER_MACHINE_NAME); fi)
 export GO15VENDOREXPERIMENT=1
 
+
 # -----------------------------------------------------------------
 #        Version
 # -----------------------------------------------------------------
@@ -66,8 +67,17 @@ build: format
 format:
 	@go fmt $(PKGS)
 
-test:
-	@go test -v $(PKGS)
+teardownTest:
+	@$(shell docker kill handsongo-mongo-test 2&>/dev/null 1&>/dev/null)
+	@$(shell docker rm handsongo-mongo-test 2&>/dev/null 1&>/dev/null)
+
+setupTest: teardownTest
+	@docker run -d --name handsongo-mongo-test -p "27017:27017" mongo
+
+test: setupTest
+	@export MONGODB_SRV=mongodb://$(DOCKER_IP)/spirits
+	-@go test -v $(PKGS)
+	@make teardownTest
 
 lint:
 	@golint dao/...

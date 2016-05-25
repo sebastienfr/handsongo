@@ -2,16 +2,13 @@ package dao
 
 import (
 	"github.com/sebastienfr/handsongo/model"
+	"os"
 	"testing"
 	"time"
 )
 
-const (
-	mongoCnx = "mongodb://192.168.99.100/spirits"
-)
-
 func TestDAOMongo(t *testing.T) {
-	daoMongo, err := GetSpiritDAO(mongoCnx, DAOMongo)
+	daoMongo, err := GetSpiritDAO(os.Getenv("MONGODB_SRV"), DAOMongo)
 	if err != nil {
 		t.Error(err)
 	}
