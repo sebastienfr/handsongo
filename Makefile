@@ -9,7 +9,7 @@
 GO=$(firstword $(subst :, ,$(GOPATH)))
 # list of pkgs for the project without vendor
 PKGS=$(shell go list ./... | grep -v /vendor/)
-DOCKER_IP=$(shell docker-mahine ip default)
+DOCKER_IP=$(shell if [ -z "$(DOCKER_MACHINE_NAME)" ]; then echo 'localhost'; else docker-machine ip $(DOCKER_MACHINE_NAME); fi)
 export GO15VENDOREXPERIMENT=1
 
 # -----------------------------------------------------------------
