@@ -8,7 +8,10 @@ import (
 )
 
 func TestDAOMongo(t *testing.T) {
-	daoMongo, err := GetSpiritDAO(os.Getenv("MONGODB_SRV"), DAOMongo)
+	// get config
+	config := os.Getenv("MONGODB_SRV")
+
+	daoMongo, err := GetSpiritDAO(config, DAOMongo)
 	if err != nil {
 		t.Error(err)
 	}
