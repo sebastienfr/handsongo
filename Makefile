@@ -32,6 +32,7 @@ help:
 	@echo "----- BUILD ------------------------------------------------------------------------------"
 	@echo "all                  clean and build the project"
 	@echo "clean                clean the project"
+	@echo "dependencies         download the dependencies"
 	@echo "build                build all libraries and binaries"
 	@echo "----- TESTS && LINT ----------------------------------------------------------------------"
 	@echo "test                 test all packages"
@@ -60,6 +61,22 @@ clean:
 	@rm -Rf *.out
 	@rm -Rf *.lock
 	@rm -Rf build
+
+dependencies:
+	@echo
+	@echo "----- DOWNLOADING -------------------------------------------------------------------------"
+	@go get -u github.com/gorilla/pat
+	@go get -u github.com/gorilla/mux
+	@go get -u github.com/gorilla/context
+	@go get -u github.com/codegangsta/negroni
+	@go get -u github.com/codegangsta/cli
+	@go get -u github.com/Sirupsen/logrus
+	@go get -u gopkg.in/mgo.v2
+	@go get -u github.com/tools/godep
+	@go get -u github.com/assembla/cony
+	@go get -u github.com/streadway/amqp
+	@go get -u github.com/golang/lint/golint
+	@echo "----- DONE --------------------------------------------------------------------------------"
 
 build: format
 	@go build -v $(VERSION_FLAG) -o $(GO)/bin/handsongo handsongo.go
