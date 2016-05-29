@@ -86,7 +86,6 @@ lint:
 	@go vet $(PKGS)
 
 start:
-	@docker run -d -p "27017:27017" mongo
 	@handsongo -port 8020 -logl debug -logf text -statd 15s -db mongodb://$(DOCKER_IP)/spirits
 
 stop:
