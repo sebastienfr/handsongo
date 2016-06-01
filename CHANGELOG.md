@@ -1,6 +1,9 @@
 # Changelog
 
-## v0.0.1 [Unreleased]
+## v0.0.2 [unreleased]
+- 16/06/01 chore(test): add go routine to statistics test (SFR)
+
+## v0.0.1 [16/05/31]
 - 16/05/25 chore(test): fix tests to run from all OS (SFR/RLE)
 - 16/05/19 feat(all): finalize web server, tests and test script (SFR)
            feat(web): add web server, middleware and router and get implementation without range

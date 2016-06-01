@@ -14,7 +14,16 @@ const (
 func TestStatistics(t *testing.T) {
 
 	statistics := NewStatistics(2 * statPeriod)
-	statistics.PlusOne()
+
+	// other go routine incrementing the counter
+	go func() {
+		statistics.PlusOne()
+	}()
+
+	// other go routine incrementing the counter
+	go func() {
+		statistics.PlusOne()
+	}()
 
 	time.Sleep(statPeriod)
 
