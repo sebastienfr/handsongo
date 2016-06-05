@@ -60,6 +60,8 @@ clean:
 	@rm -Rf *.log
 	@rm -Rf *.out
 	@rm -Rf *.lock
+	@rm -Rf *.mem
+	@rm -Rf *.test
 	@rm -Rf build
 
 dependencies:
@@ -90,6 +92,13 @@ setupTest: teardownTest
 
 test: setupTest
 	@export MONGODB_SRV=mongodb://$(DOCKER_IP)/spirits; go test -v $(PKGS); make teardownTest
+
+bench:
+	@go test -v -run TestSpiritHandlerGet -bench=. -memprofile=prof.mem github.com/sebastienfr/handsongo/web
+
+benchTool: bench
+	@echo "### TIP : type 'top 5' and 'list the first item'"
+	@go tool pprof --alloc_space web.test prof.mem
 
 lint:
 	@golint dao/...

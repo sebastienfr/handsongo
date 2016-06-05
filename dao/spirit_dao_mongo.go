@@ -104,11 +104,15 @@ func (s *SpiritDAOMongo) SaveSpirit(spirit *model.Spirit) error {
 }
 
 // UpsertSpirit updates or creates a spirit
-func (s *SpiritDAOMongo) UpsertSpirit(ID string, spirit *model.Spirit) (*mgo.ChangeInfo, error) {
+func (s *SpiritDAOMongo) UpsertSpirit(ID string, spirit *model.Spirit) (bool, error) {
 	session := s.session.Copy()
 	defer session.Close()
 	c := session.DB("").C(collection)
-	return c.Upsert(bson.M{"_id": bson.ObjectIdHex(ID)}, spirit)
+	chg, err := c.Upsert(bson.M{"_id": bson.ObjectIdHex(ID)}, spirit)
+	if err != nil {
+		return false, err
+	}
+	return chg.Updated > 0, err
 }
 
 // DeleteSpirit deletes a spirits by its ID

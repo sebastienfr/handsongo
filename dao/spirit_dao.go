@@ -2,7 +2,6 @@ package dao
 
 import (
 	"github.com/sebastienfr/handsongo/model"
-	"gopkg.in/mgo.v2"
 )
 
 const (
@@ -32,7 +31,7 @@ type SpiritDAO interface {
 	SaveSpirit(spirit *model.Spirit) error
 
 	// UpsertSpirit updates or creates a spirit
-	UpsertSpirit(ID string, spirit *model.Spirit) (*mgo.ChangeInfo, error)
+	UpsertSpirit(ID string, spirit *model.Spirit) (bool, error)
 
 	// DeleteSpirit deletes a spirits by its ID
 	DeleteSpirit(ID string) error

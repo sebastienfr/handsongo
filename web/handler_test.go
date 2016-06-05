@@ -35,27 +35,47 @@ func TestSpiritHandlerGet(t *testing.T) {
 		t.Errorf("Unable to get JSON content %v", err)
 	}
 
-	expected := model.Spirit{
-		Name:         "Caroni",
-		Distiller:    "Caroni",
-		Bottler:      "Velier",
-		Country:      "Trinidad",
-		Composition:  "Molasse",
-		SpiritType:   model.TypeRhum,
-		Age:          15,
-		BottlingDate: time.Date(2015, 01, 01, 0, 0, 0, 0, time.UTC),
-		Score:        8.5,
-		Comment:      "heavy tire taste",
+	if res.Code != http.StatusOK {
+		t.Error("Wrong response code")
 	}
 
-	if expected != spiritOut[0] {
-		t.Errorf("Expected different from %v output %v", expected, spiritOut)
+	if dao.MockedSpirit != spiritOut[0] {
+		t.Errorf("Expected different from %v output %v", dao.MockedSpirit, spiritOut[0])
+	}
+}
+
+func TestSpiritHandlerGetServer(t *testing.T) {
+
+	ts := httptest.NewServer(BuildWebServer("", dao.DAOMock, 250*time.Millisecond))
+	defer ts.Close()
+
+	res, err := http.Get(ts.URL + "/spirits")
+	if err != nil {
+		t.Error(err)
 	}
 
-	t.Logf("Test successfull expected \n %v \n is equal to result \n %v", expected, spiritOut[0])
+	var resSpirit []model.Spirit
+	err = json.NewDecoder(res.Body).Decode(&resSpirit)
+
+	if err != nil {
+		t.Errorf("Unable to get JSON content %v", err)
+	}
+
+	res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		t.Error("Wrong response code")
+	}
+
+	if resSpirit[0] != dao.MockedSpirit {
+		t.Error("Wrong response body")
+	}
 }
 
 func BenchmarkSpiritHandlerGet(t *testing.B) {
+
+	// tooling purpose
+	_ = new([45000]int)
 
 	// get mock dao
 	daoMock, _ := dao.GetSpiritDAO("", dao.DAOMock)

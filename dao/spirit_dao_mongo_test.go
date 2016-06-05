@@ -17,7 +17,7 @@ func TestDAOMongo(t *testing.T) {
 	}
 
 	toSave := model.Spirit{
-		Name:         "Caroni",
+		Name:         "Caroni 2000",
 		Distiller:    "Caroni",
 		Bottler:      "Velier",
 		Country:      "Trinidad",

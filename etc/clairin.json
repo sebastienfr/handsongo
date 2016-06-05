@@ -6,7 +6,7 @@
   "region": "",
   "composition": "Cane juice",
   "type": "rhum",
-  "distillationYear": 5,
+  "age": 5,
   "bottlingDate": "2015-01-01T00:00:00Z",
   "score": 8.0,
   "comment": "fruity"

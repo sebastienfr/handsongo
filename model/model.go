@@ -30,7 +30,7 @@ type Spirit struct {
 	Region       string        `json:"region" bson:"region"`
 	Composition  string        `json:"composition" bson:"composition"`
 	SpiritType   string        `json:"type" bson:"type"`
-	Age          uint8         `json:"distillationYear" bson:"distillationYear"`
+	Age          uint8         `json:"age" bson:"age"`
 	BottlingDate time.Time     `json:"bottlingDate" bson:"bottlingDate"`
 	Score        float32       `json:"score" bson:"score"`
 	Comment      string        `json:"comment" bson:"comment"`

@@ -5,8 +5,6 @@ import (
 	"fmt"
 	logger "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/codegangsta/negroni"
-	"github.com/meatballhat/negroni-logrus"
 	"github.com/sebastienfr/handsongo/dao"
 	"github.com/sebastienfr/handsongo/utils"
 	"github.com/sebastienfr/handsongo/web"
@@ -112,38 +110,10 @@ func main() {
 			logger.Warn("error setting log level, using debug as default")
 		}
 
-		// get the mongodb dao
-		daoMongo, err := dao.GetSpiritDAO(db, dao.DAOMongo)
-		if err != nil {
-			logger.WithField("error", err).WithField("connection string", db).Fatal("unable to connect to mongo db")
-		}
-
-		// web server
-		n := negroni.New()
-
-		// new handler
-		handler := web.NewSpiritHandler(daoMongo)
-		// new router
-		router := web.NewRouter(handler)
-
-		// add middleware for logging
-		n.Use(negronilogrus.NewMiddlewareFromLogger(logger.StandardLogger(), "spirit"))
-
-		// add recovery middleware in case of panic in handler func
-		recovery := negroni.NewRecovery()
-		recovery.PrintStack = false
-		n.Use(recovery)
-
-		// add statistics middleware
-		n.Use(web.NewStatisticsMiddleware(statisticsDuration))
-
-		// add as many middleware as you like
-
-		// handler goes last
-		n.UseHandler(router.Mux)
+		webServer := web.BuildWebServer(db, dao.DAOMongo, statisticsDuration)
 
 		// serve
-		n.Run(":" + strconv.Itoa(port))
+		webServer.Run(":" + strconv.Itoa(port))
 	}
 
 	// run the app

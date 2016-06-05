@@ -7,7 +7,7 @@ import (
 
 const (
 	statPeriod    = 500 * time.Millisecond
-	expectedCount = 1
+	expectedCount = 2
 	emptyCount    = 0
 )
 

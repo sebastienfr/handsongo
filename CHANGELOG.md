@@ -1,6 +1,12 @@
 # Changelog
 
-## v0.0.2 [unreleased]
+## v0.0.2 [16/06/06]
+- 16/06/05 refact(dao): change dao Upsert signature to remove mgo dependency (SFR)
+           refact(model): fix model JSON annotation for age
+           fix(test): fix statistics test for expected request count
+           refact(web): refactor web server in a separate file and main entry point
+           feat(test): add full web server test
+           chores(test): add benchmarking target and instruction
 - 16/06/01 chore(test): add go routine to statistics test (SFR)
 
 ## v0.0.1 [16/05/31]
