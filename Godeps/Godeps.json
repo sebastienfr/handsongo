@@ -1,29 +1,20 @@
 {
 	"ImportPath": "github.com/sebastienfr/handsongo",
-	"GoVersion": "go1.5",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v0.10.0",
-			"Rev": "4b6ea7319e214d98c938f12692336f7ca9348d6b"
+			"Comment": "v0.10.0-19-gf3cfb45",
+			"Rev": "f3cfb454f4c209e6668c95216c4744b8fddb2356"
 		},
 		{
 			"ImportPath": "github.com/Sirupsen/logrus/formatters/logstash",
-			"Comment": "v0.10.0",
-			"Rev": "4b6ea7319e214d98c938f12692336f7ca9348d6b"
-		},
-		{
-			"ImportPath": "github.com/codegangsta/cli",
-			"Comment": "1.2.0-237-g71f57d3",
-			"Rev": "71f57d300dd6a780ac1856c005c4b518cfd498ec"
-		},
-		{
-			"ImportPath": "github.com/codegangsta/negroni",
-			"Comment": "v0.1-111-ga2adb52",
-			"Rev": "a2adb52ce9f055b63f8e1175d02ec706e064bd2a"
+			"Comment": "v0.10.0-19-gf3cfb45",
+			"Rev": "f3cfb454f4c209e6668c95216c4744b8fddb2356"
 		},
 		{
 			"ImportPath": "github.com/gorilla/context",
@@ -36,7 +27,17 @@
 		},
 		{
 			"ImportPath": "github.com/meatballhat/negroni-logrus",
-			"Rev": "dd89490b0057cca7fe3fa3885f82935dfd430c2e"
+			"Rev": "7c570a907cfc69cdc004ad506c6f5e234815b936"
+		},
+		{
+			"ImportPath": "github.com/urfave/cli",
+			"Comment": "v1.17.0-79-g6011f16",
+			"Rev": "6011f165dc288c72abd8acd7722f837c5c64198d"
+		},
+		{
+			"ImportPath": "github.com/urfave/negroni",
+			"Comment": "v0.2.0-48-gdcaac91",
+			"Rev": "dcaac9107a7a6ba4cf5143afc145e2b70a1c12c2"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",

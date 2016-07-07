@@ -1,5 +1,5 @@
 # minimal linux distribution
-FROM golang:1.5-wheezy
+FROM golang:1.6-wheezy
 
 # GO and PATH env variables already set in golang image
 

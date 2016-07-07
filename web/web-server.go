@@ -2,9 +2,9 @@ package web
 
 import (
 	logger "github.com/Sirupsen/logrus"
-	"github.com/codegangsta/negroni"
 	"github.com/meatballhat/negroni-logrus"
 	"github.com/sebastienfr/handsongo/dao"
+	"github.com/urfave/negroni"
 	"time"
 )
 
