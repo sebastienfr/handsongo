@@ -18,7 +18,7 @@ export GO15VENDOREXPERIMENT=1
 # -----------------------------------------------------------------
 
 # version
-VERSION=0.0.3-SNAPSHOT
+VERSION=0.0.3
 BUILDDATE=$(shell date -u '+%s')
 BUILDHASH=$(shell git rev-parse --short HEAD)
 VERSION_FLAG=-ldflags "-X main.Version=$(VERSION) -X main.GitHash=$(BUILDHASH) -X main.BuildStmp=$(BUILDDATE)"

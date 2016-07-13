@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.0.3 [unreleased]
+## v0.0.3 [16/07/13]
 - 16/07/07 chore(vendor): update codegansta vendor to urfave (SFR)
            chore(docker): update Go version to 1.6 in Docker deployment
            chore(build): add travis build support
