@@ -18,7 +18,7 @@ export GO15VENDOREXPERIMENT=1
 # -----------------------------------------------------------------
 
 # version
-VERSION=0.0.1
+VERSION=0.0.3
 BUILDDATE=$(shell date -u '+%s')
 BUILDHASH=$(shell git rev-parse --short HEAD)
 VERSION_FLAG=-ldflags "-X main.Version=$(VERSION) -X main.GitHash=$(BUILDHASH) -X main.BuildStmp=$(BUILDDATE)"
@@ -69,8 +69,8 @@ dependencies:
 	@echo "----- DOWNLOADING -------------------------------------------------------------------------"
 	@go get -u github.com/gorilla/mux
 	@go get -u github.com/gorilla/context
-	@go get -u github.com/codegangsta/negroni
-	@go get -u github.com/codegangsta/cli
+	@go get -u github.com/urfave/negroni
+	@go get -u github.com/urfave/cli
 	@go get -u github.com/Sirupsen/logrus
 	@go get -u gopkg.in/mgo.v2
 	@go get -u github.com/tools/godep

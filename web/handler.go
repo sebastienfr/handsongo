@@ -33,35 +33,35 @@ func NewSpiritHandler(spiritDAO dao.SpiritDAO) *SpiritHandler {
 	// GetAll
 	routes = append(routes, Route{
 		Name:        "Get all spirits",
-		Method:      "GET",
+		Method:      http.MethodGet,
 		Pattern:     "",
 		HandlerFunc: handler.GetAll,
 	})
 	// Get
 	routes = append(routes, Route{
 		Name:        "Get one spirit",
-		Method:      "GET",
+		Method:      http.MethodGet,
 		Pattern:     "/{id}",
 		HandlerFunc: handler.Get,
 	})
 	// Create
 	routes = append(routes, Route{
 		Name:        "Create a spirit",
-		Method:      "POST",
+		Method:      http.MethodPost,
 		Pattern:     "",
 		HandlerFunc: handler.Create,
 	})
 	// Update
 	routes = append(routes, Route{
 		Name:        "Update a spirit",
-		Method:      "PUT",
+		Method:      http.MethodPut,
 		Pattern:     "/{id}",
 		HandlerFunc: handler.Update,
 	})
 	// Delete
 	routes = append(routes, Route{
 		Name:        "Delete a spirit",
-		Method:      "DELETE",
+		Method:      http.MethodDelete,
 		Pattern:     "/{id}",
 		HandlerFunc: handler.Delete,
 	})

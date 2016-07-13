@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.6
+  - tip
+
+script:
+  - make build
+  - go get -u github.com/golang/lint/golint
+  - make lint
