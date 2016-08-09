@@ -18,7 +18,7 @@ export GO15VENDOREXPERIMENT=1
 # -----------------------------------------------------------------
 
 # version
-VERSION=0.0.3
+VERSION=0.0.4
 BUILDDATE=$(shell date -u '+%s')
 BUILDHASH=$(shell git rev-parse --short HEAD)
 VERSION_FLAG=-ldflags "-X main.Version=$(VERSION) -X main.GitHash=$(BUILDHASH) -X main.BuildStmp=$(BUILDDATE)"
@@ -130,7 +130,7 @@ dockerUp:
 dockerStop:
 	docker-compose stop
 	docker-compose kill
-	docker-compose rm --all
+	docker-compose rm
 
 dockerBuildUp: dockerStop dockerBuild dockerUp
 

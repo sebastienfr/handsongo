@@ -84,8 +84,8 @@ func main() {
 	}
 
 	// main action
-	// sub action are possible also
-	app.Action = func(c *cli.Context) {
+	// sub action are also possible
+	app.Action = func(c *cli.Context) error {
 		// print header
 		fmt.Println(string(header))
 
@@ -96,13 +96,13 @@ func main() {
 		logFormat = c.String("logf")
 		statisticsDuration = c.Duration("statd")
 
-		fmt.Printf("* --------------------------------------------------- *\n")
+		fmt.Print("* --------------------------------------------------- *\n")
 		fmt.Printf("|   port                    : %d\n", port)
 		fmt.Printf("|   db                      : %s\n", db)
 		fmt.Printf("|   logger level            : %s\n", logLevel)
 		fmt.Printf("|   logger format           : %s\n", logFormat)
 		fmt.Printf("|   statistic duration(s)   : %0.f\n", statisticsDuration.Seconds())
-		fmt.Printf("* --------------------------------------------------- *\n")
+		fmt.Print("* --------------------------------------------------- *\n")
 
 		// init log options from command line params
 		err := utils.InitLog(logLevel, logFormat)
@@ -110,10 +110,16 @@ func main() {
 			logger.Warn("error setting log level, using debug as default")
 		}
 
-		webServer := web.BuildWebServer(db, dao.DAOMongo, statisticsDuration)
+		webServer, err := web.BuildWebServer(db, dao.DAOMongo, statisticsDuration)
+
+		if err != nil {
+			return err
+		}
 
 		// serve
 		webServer.Run(":" + strconv.Itoa(port))
+
+		return nil
 	}
 
 	// run the app

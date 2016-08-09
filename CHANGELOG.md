@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.0.4 [16/08/09]
+- 16/08/09 chore(doc): update README (SFR)
+           chore(deploy): switch to smaller image alpine
+           refact(all): use anonymous attribute for router
+           refact(all): main action return errors
+
 ## v0.0.3 [16/07/13]
 - 16/07/07 chore(vendor): update codegansta vendor to urfave (SFR)
            chore(docker): update Go version to 1.6 in Docker deployment

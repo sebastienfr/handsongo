@@ -9,12 +9,13 @@ import (
 )
 
 // BuildWebServer constructs a new web server with the right DAO and spirits handler
-func BuildWebServer(db string, daoType int, statisticsDuration time.Duration) *negroni.Negroni {
+func BuildWebServer(db string, daoType int, statisticsDuration time.Duration) (*negroni.Negroni, error) {
 
 	// spirit dao
 	dao, err := dao.GetSpiritDAO(db, daoType)
 	if err != nil {
 		logger.WithField("error", err).WithField("connection string", db).Fatal("unable to connect to mongo db")
+		return nil, err
 	}
 
 	// web server
@@ -22,6 +23,7 @@ func BuildWebServer(db string, daoType int, statisticsDuration time.Duration) *n
 
 	// new handler
 	handler := NewSpiritHandler(dao)
+
 	// new router
 	router := NewRouter(handler)
 
@@ -39,7 +41,7 @@ func BuildWebServer(db string, daoType int, statisticsDuration time.Duration) *n
 	// add as many middleware as you like
 
 	// handler goes last
-	n.UseHandler(router.Mux)
+	n.UseHandler(router)
 
-	return n
+	return n, nil
 }

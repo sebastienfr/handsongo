@@ -46,10 +46,17 @@ func TestSpiritHandlerGet(t *testing.T) {
 
 func TestSpiritHandlerGetServer(t *testing.T) {
 
-	ts := httptest.NewServer(BuildWebServer("", dao.DAOMock, 250*time.Millisecond))
+	srv, err := BuildWebServer("", dao.DAOMock, 250*time.Millisecond)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	ts := httptest.NewServer(srv)
 	defer ts.Close()
 
 	res, err := http.Get(ts.URL + "/spirits")
+
 	if err != nil {
 		t.Error(err)
 	}
