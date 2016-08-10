@@ -79,7 +79,7 @@ func main() {
 		cli.DurationFlag{
 			Value: statisticsDuration,
 			Name:  "statd",
-			Usage: "Set the token duration (ex : 1h, 2h30m, 30s, 300ms)",
+			Usage: "Set the statistics check period duration (ex : 1h, 2h30m, 30s, 300ms)",
 		},
 	}
 
