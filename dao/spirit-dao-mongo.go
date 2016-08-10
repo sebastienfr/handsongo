@@ -61,7 +61,7 @@ func (s *SpiritDAOMongo) getAllSpiritsByQuery(query interface{}, start, end int)
 	c := session.DB("").C(collection)
 
 	// check param
-	hasPaging := start > -1 && end > -1 && end > start
+	hasPaging := start > NoPaging && end > NoPaging && end > start
 
 	// perform request
 	var err error
