@@ -107,20 +107,7 @@ func BenchmarkSpiritHandlerGet(t *testing.B) {
 		t.Errorf("Unable to get JSON content %v", err)
 	}
 
-	expected := model.Spirit{
-		Name:         "Caroni",
-		Distiller:    "Caroni",
-		Bottler:      "Velier",
-		Country:      "Trinidad",
-		Composition:  "Molasse",
-		SpiritType:   model.TypeRhum,
-		Age:          15,
-		BottlingDate: time.Date(2015, 01, 01, 0, 0, 0, 0, time.UTC),
-		Score:        8.5,
-		Comment:      "heavy tire taste",
-	}
-
-	if expected != spiritOut[0] {
-		t.Errorf("Expected different from %v output %v", expected, spiritOut)
+	if dao.MockedSpirit != spiritOut[0] {
+		t.Errorf("Expected different from %v output %v", dao.MockedSpirit, spiritOut)
 	}
 }
